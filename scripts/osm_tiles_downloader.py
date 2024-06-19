@@ -61,7 +61,8 @@ def download_tiles(tile_list):
         time.sleep((100 + random.randint(-50, 200))/1000)
 
         # url = f"https://tile.openstreetmap.org/{tile[0]}/{tile[1]}/{tile[2]}.png"
-        url = f"https://tile.geofabrik.de/549e80f319af070f8ea8d0f149a149c2/{tile[0]}/{tile[1]}/{tile[2]}.png"
+        url = "https://tile.geofabrik.de/549e80f319af070f8ea8d0f149a149c2/" + \
+            f"{tile[0]}/{tile[1]}/{tile[2]}.png"
         folder_path = f"./tiles/{tile[0]}/{tile[1]}/"
         file_name = f"./tiles/{tile[0]}/{tile[1]}/{tile[2]}.png"
 
@@ -175,6 +176,23 @@ custom_tiles = [(0, 0, 0),
 
 # print(custom_tiles)
 
-estimate_tile_size(custom_tiles)
+# estimate_tile_size(custom_tiles)
 
 # download_tiles(custom_tiles)
+
+new_tiles_sac_24 = [
+    (8, 51, 101), (8, 52, 101),
+    (9, 103, 205), (9, 104, 205), (9, 105, 205),
+    (9, 103, 206), (9, 104, 206), (9, 105, 206),
+    (9, 103, 207), (9, 104, 207), (9, 105, 207),
+    (10, 206, 414), (10, 207, 414), (10, 208, 414), (10, 209, 414),
+    (10, 206, 415), (10, 207, 415), (10, 208, 415), (10, 209, 415),
+    *get_tiles_between((11, 413, 823), (11, 417, 827)),  # 20 km
+    *get_tiles_between((11, 415, 828), (11, 417, 830)),  # LC
+    *get_tiles_between((12, 827, 1647), (12, 834, 1652)),  # 20 km
+    *get_tiles_between((12, 831, 1657), (12, 834, 1660)),  # LC
+]
+
+estimate_tile_size(new_tiles_sac_24)
+
+download_tiles(new_tiles_sac_24)
