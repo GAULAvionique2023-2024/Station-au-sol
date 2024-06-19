@@ -46,10 +46,16 @@
     .grid {
         grid-template-columns: 1fr 2fr;
         grid-template-rows: repeat(3, 1fr);
+        // grid-template-areas:
+        //     "map chart"
+        //     "status angle"
+        //     "other console";
+
+        // SAC 24 LAYOUT
         grid-template-areas:
-            "map chart"
-            "status angle"
-            "other console";
+            "map map"
+            "map map"
+            "status console";
     }
 }
 

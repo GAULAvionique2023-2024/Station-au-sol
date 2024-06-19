@@ -58,16 +58,16 @@ const connClass = computed(() => {
 
 <template>
   <div id="status" class="component">
-    <div id="batt">
+    <!-- <div id="batt">
       <Batt :class="battClass" />
       <div id="batt-val">
         <p>???mV</p>
         <p>???mV</p>
         <p>???mV</p>
       </div>
-    </div>
+    </div> -->
     <GPS :class="gpsClass" />
-    <div id="ignit">
+    <!-- <div id="ignit">
       <Ignit :class="ignitClass" />
       <div id="ignit-val">
         <p>#1 OK</p>
@@ -75,9 +75,11 @@ const connClass = computed(() => {
         <p>#3 ERR</p>
         <p>#3 ERR</p>
       </div>
+    </div> -->
+    <div id="conn">
+      <Conn :class="connClass" />
+      <p>{{ timer }} s</p>
     </div>
-    <Conn :class="connClass" />
-    <!-- <p v-text="timer"></p> -->
   </div>
 </template>
 
@@ -86,7 +88,7 @@ const connClass = computed(() => {
   display: grid;
   height: 100%;
   grid-template-columns: 50% 50%;
-  grid-template-rows: 50% 50%;
+  // grid-template-rows: 50% 50%;
   place-items: center;
 
   .green path {
@@ -117,6 +119,17 @@ const connClass = computed(() => {
     justify-self: self-start;
     margin: 0;
     margin-left: 0.6em;
+  }
+}
+
+#conn {
+  display: grid;
+  grid-template-rows: 50% 50%;
+  align-items: center;
+
+  p {
+    justify-self: center;
+    margin: 5px 0;
   }
 }
 </style>

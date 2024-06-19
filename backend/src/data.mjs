@@ -41,18 +41,23 @@ export default class MyData extends EventEmitter {
     handleSAC24DataLine(line) {
         const data = line.split(',');
 
+        // Check GPS Fix (A: Fix, V: No fix)
+        if (data[2] !== 'A') {
+            const dataDict = {
+                "statGPS": 0,
+            }
+
+            this.emit("data", dataDict);
+            return;
+        }
+        
+        // Check data integrity
         if (data.length !== 14) {
             this.emit("dataEvent", {
                 "type": "error",
-                "error": `wrong packet length (${data.length} data instead of 14)`,
+                "error": `wrong packet length (${data.length} data instead of 14) (${data.join()})`,
             });
-            logger(chalk.blue("Data"), chalk.red(`wrong packet length (${data.length} data instead of 14)`));
-            return;
-        }
-
-        let statGPS = 1;
-        if (data[2] !== 'A') {
-            statGPS = 0;
+            logger(chalk.blue("Data"), chalk.red(`wrong packet length (${data.length} data instead of 14) (${data.join()})`));
             return;
         }
 
@@ -67,13 +72,13 @@ export default class MyData extends EventEmitter {
         const lon_mm = Number(lon_raw.slice(3)) / 60;
         const lon = -(Number(lon_dd) + Number(lon_mm));
 
-        const datadict = {
-            "statGPS": statGPS,
+        const dataDict = {
+            "statGPS": 1,
             "lat": lat,
             "lon": lon
         }
 
-        this.emit("data", datadict)
+        this.emit("data", dataDict)
     }
 
     // Extract a line of data
