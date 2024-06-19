@@ -39,7 +39,7 @@ export default class MyData extends EventEmitter {
     }
 
     handleSAC24DataLine(line) {
-        const data = line.split(',');
+        let data = line.split(',');
 
         // Check GPS Fix (A: Fix, V: No fix)
         if (data[2] !== 'A') {
@@ -50,19 +50,22 @@ export default class MyData extends EventEmitter {
             this.emit("data", dataDict);
             return;
         }
-        
+
+        // Only keep lat lon
+        data = data.slice(3,7);
+
         // Check data integrity
-        if (data.length !== 14) {
+        if (!(data[0].length === 9 && data[2].length === 10)) {
             this.emit("dataEvent", {
                 "type": "error",
-                "error": `wrong packet length (${data.length} data instead of 14) (${data.join()})`,
+                "error": `wrong data format (0000.0000,N,00000.0000,W) (${data.join()})`,
             });
-            logger(chalk.blue("Data"), chalk.red(`wrong packet length (${data.length} data instead of 14) (${data.join()})`));
+            logger(chalk.blue("Data"), chalk.red(`wrong data format (0000.0000,N,00000.0000,W) (${data.join()})`));
             return;
         }
 
-        const lat_raw = data[3];
-        const lon_raw = data[5];
+        const lat_raw = data[0];
+        const lon_raw = data[2];
 
         const lat_dd = lat_raw.slice(0, 2);
         const lat_mm = Number(lat_raw.slice(2)) / 60;
