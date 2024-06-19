@@ -28,6 +28,18 @@ export default class MyData extends EventEmitter {
     handleRawSAC24Data(data) {
         this.stringDataBuffer += data.toString("utf-8");
 
+        // Error from STM32
+        if (this.stringDataBuffer.includes('!')) {
+            this.emit("dataEvent", {
+                "type": "error",
+                "error": "wrong data from STM32",
+            });
+            logger(chalk.blue("Data"), chalk.red("wrong data from STM32"));
+            this.stringDataBuffer = "";
+            return;
+        }
+
+        // Keep a line of data
         if (this.stringDataBuffer.includes('$')) {
             // Keep text before line ending
             const line = this.stringDataBuffer.split('$')[0];
@@ -42,7 +54,7 @@ export default class MyData extends EventEmitter {
         let data = line.split(',');
 
         // Check GPS Fix (A: Fix, V: No fix)
-        if (data[2] !== 'A') {
+        if (data[0] !== 'A') {
             const dataDict = {
                 "statGPS": 0,
             }
@@ -52,20 +64,19 @@ export default class MyData extends EventEmitter {
         }
 
         // Only keep lat lon
-        data = data.slice(3,7);
+        
+        const lat_raw = data[1];
+        const lon_raw = data[3];
 
         // Check data integrity
-        if (!(data[0].length === 9 && data[2].length === 10)) {
+        if (!(lat_raw && lon_raw && lat_raw.length === 9 && lon_raw.length === 10)) {
             this.emit("dataEvent", {
                 "type": "error",
-                "error": `wrong data format (0000.0000,N,00000.0000,W) (${data.join()})`,
+                "error": `wrong data format (A,0000.0000,N,00000.0000,W) (${data.join()})`,
             });
-            logger(chalk.blue("Data"), chalk.red(`wrong data format (0000.0000,N,00000.0000,W) (${data.join()})`));
+            logger(chalk.blue("Data"), chalk.red(`wrong data format (A,0000.0000,N,00000.0000,W) (${data.join()})`));
             return;
         }
-
-        const lat_raw = data[0];
-        const lon_raw = data[2];
 
         const lat_dd = lat_raw.slice(0, 2);
         const lat_mm = Number(lat_raw.slice(2)) / 60;
