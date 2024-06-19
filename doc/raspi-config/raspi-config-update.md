@@ -92,6 +92,16 @@ Puis redémarrer:
 sudo reboot
 ```
 
+## Note pour Spaceport America Cup
+
+Le code pour la station au sol se trouve sur la branche `sac24`, donc il faut probablement retourner sur la branche main si on veut utiliser la station après SAC.
+
+Pour changer de branche:
+
+```bash
+git switch <BRANCH NAME>
+```
+
 ---
 
 Retour aux [guides pour configurer le Raspberry Pi](./raspi-config.md)
