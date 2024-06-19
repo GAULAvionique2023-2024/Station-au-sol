@@ -43,6 +43,18 @@ export const useConsoleStore = defineStore('console', () => {
         }
     });
 
+    // Log data events from the server
+    socket.on("dataEvent", (event) => {
+        if (settings.logDataEventsToConsole) console.log("Data Event:", event);
+
+        if (event.type == "error") {
+            logger(`<span class="text-blue">Data</span> <span class="text-danger">${event.error}</span>`);
+        } else {
+            // To improve
+            logger(`<span class="text-blue">Data</span> ${event}`);
+        }
+    });
+
     // Log socket events (Raspberry Pi <-> Web App)
     socket.on('connect', () => {
         logger('<span class="text-blue">Socket</span> <span class="text-success">Connected</span> (Raspberry Pi &harr; Web App)');

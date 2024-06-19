@@ -54,5 +54,7 @@ function handleData(data, callback) {
     data.yaw = data.yaw ? Number(data.yaw).toFixed(1) : null;
     data.roll = data.roll ? Number(data.roll).toFixed(1) : null;
     data.temperature = data.temperature ? Number(data.temperature).toFixed(1) : null;
+    data.lat = data.lat ? Number(data.lat).toFixed(6) : null;
+    data.lon = data.lon ? Number(data.lon).toFixed(6) : null;
     callback(data);
 }

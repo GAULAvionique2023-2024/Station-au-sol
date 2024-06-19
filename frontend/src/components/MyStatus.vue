@@ -6,7 +6,7 @@ import GPS from '@/assets/img/status/gps.svg';
 import Ignit from '@/assets/img/status/ignit.svg';
 import Conn from '@/assets/img/status/conn.svg';
 
-import { computed, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useDataStore } from '@/stores/data';
 
@@ -34,21 +34,21 @@ function colorFromStatus(status) {
   }
 }
 
-let timer = -1; // -1 is unknown
+let timer = ref(-1); // -1 is unknown
 let connInterval;
 
 // Reset timer on data
 watch(currentData, () => {
-  timer = 0;
+  timer.value = 0;
 
   clearInterval(connInterval);
-  connInterval = setInterval(() => { timer += 1 }, 1000);
+  connInterval = setInterval(() => { timer.value += 1 }, 1000);
 });
 
 const connClass = computed(() => {
-  if (timer > props.maxConnTimout) {
+  if (timer.value > props.maxConnTimout) {
     return 'red';
-  } else if (timer === -1) {
+  } else if (timer.value === -1) {
     return 'yellow';
   } else {
     return 'green';
@@ -77,6 +77,7 @@ const connClass = computed(() => {
       </div>
     </div>
     <Conn :class="connClass" />
+    <!-- <p v-text="timer"></p> -->
   </div>
 </template>
 

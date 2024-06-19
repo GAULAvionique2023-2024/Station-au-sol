@@ -16,6 +16,7 @@ export const useSettingsStore = defineStore('settings', () => {
     // Log to dev console
     const logDataToConsole = ref(false);
     const logSerialEventsToConsole = ref(false);
+    const logDataEventsToConsole = ref(false);
 
     // Chart settings
     const chartMaxDataPoints = ref(300);
@@ -56,5 +57,5 @@ export const useSettingsStore = defineStore('settings', () => {
         socket.emit('newSettings', settings);
     }
 
-    return { maxDataToStore, minDataInterval, logDataToConsole, logSerialEventsToConsole, chartMaxDataPoints, showChart, toggleFullscreen, paused, togglePaused, availablePaths, currentPath, updateAvailablePaths, sendNewSettings }
+    return { maxDataToStore, minDataInterval, logDataToConsole, logSerialEventsToConsole, logDataEventsToConsole, chartMaxDataPoints, showChart, toggleFullscreen, paused, togglePaused, availablePaths, currentPath, updateAvailablePaths, sendNewSettings }
 });

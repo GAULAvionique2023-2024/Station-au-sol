@@ -25,6 +25,57 @@ export default class MyData extends EventEmitter {
         this.dataInterval = dataInterval;
     }
 
+    handleRawSAC24Data(data) {
+        this.stringDataBuffer += data.toString("utf-8");
+
+        if (this.stringDataBuffer.includes('$')) {
+            // Keep text before line ending
+            const line = this.stringDataBuffer.split('$')[0];
+            // Remove text before line ending from buffer to avoid processing it twice
+            this.stringDataBuffer = this.stringDataBuffer.split('$').slice(1).join('$');
+            // Handle the line of data
+            this.handleSAC24DataLine(line);
+        }
+    }
+
+    handleSAC24DataLine(line) {
+        const data = line.split(',');
+
+        if (data.length !== 14) {
+            this.emit("dataEvent", {
+                "type": "error",
+                "error": `wrong packet length (${data.length} data instead of 14)`,
+            });
+            logger(chalk.blue("Data"), chalk.red(`wrong packet length (${data.length} data instead of 14)`));
+            return;
+        }
+
+        let statGPS = 1;
+        if (data[2] !== 'A') {
+            statGPS = 0;
+            return;
+        }
+
+        const lat_raw = data[3];
+        const lon_raw = data[5];
+
+        const lat_dd = lat_raw.slice(0, 2);
+        const lat_mm = Number(lat_raw.slice(2)) / 60;
+        const lat = Number(lat_dd) + Number(lat_mm);
+        
+        const lon_dd = lon_raw.slice(0, 3);
+        const lon_mm = Number(lon_raw.slice(3)) / 60;
+        const lon = -(Number(lon_dd) + Number(lon_mm));
+
+        const datadict = {
+            "statGPS": statGPS,
+            "lat": lat,
+            "lon": lon
+        }
+
+        this.emit("data", datadict)
+    }
+
     // Extract a line of data
     // data: Buffer
     handleRawData(data) {

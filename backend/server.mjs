@@ -45,7 +45,8 @@ class App {
             if (mockMode) {
                 this.data.handleRawMockData(data);
             } else {
-                this.data.handleRawData(data);
+                // this.data.handleRawData(data);
+                this.data.handleRawSAC24Data(data);
             }
         });
 
