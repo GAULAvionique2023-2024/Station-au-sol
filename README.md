@@ -2,11 +2,15 @@
 
 ![GAUL Banner](doc/logo-full.webp)
 
-Ce repo contient le code pour la station au sol du GAUL
+### Repo avec le code utilisé pour Spaceport America Cup 2024
 
 Le projet fonctionne avec un serveur node.js qui roule sur un Raspberry Pi. Ce serveur reçoit les données de la fusée, puis les envoie aux clients connectés pour mettre à jour leur interface.
 
-[Explications plus détaillées](./doc/explications.md)
+Seulement l'interface pour la position GPS a été gardé :
+
+![Interface](doc/setup_sac.png)
+
+<!-- [Explications plus détaillées](./doc/explications.md)
 
 ## Images de l'interface
 
@@ -24,4 +28,4 @@ Le projet fonctionne avec un serveur node.js qui roule sur un Raspberry Pi. Ce s
 
 ---
 
-### [Roadmap](./ROADMAP.md)
+### [Roadmap](./ROADMAP.md) -->
