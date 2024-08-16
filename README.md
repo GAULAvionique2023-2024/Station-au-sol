@@ -2,7 +2,7 @@
 
 ![GAUL Banner](doc/logo-full.webp)
 
-Repo qui contient le code pour la station au sol du GAUL
+Repo qui contient le code de la station au sol du GAUL pour la compétition Launch Canada 2024.
 
 Le projet fonctionne avec un serveur node.js qui roule sur un Raspberry Pi 4B. Ce serveur reçoit les données de la fusée, puis les envoie aux clients connectés pour mettre à jour leur interface.
 
