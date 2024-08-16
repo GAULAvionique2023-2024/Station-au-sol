@@ -166,7 +166,7 @@ export default class MyData extends EventEmitter {
 
         if (flightMode === 1) {
             // Packet length validation
-            const fligthPacketLength = 58;
+            const fligthPacketLength = 54;
             if (line.length !== fligthPacketLength) {
                 this.emit("dataEvent", {
                     type: "error",
@@ -182,6 +182,8 @@ export default class MyData extends EventEmitter {
             // const crc = line.subarray(56, 58);
             // console.log(crc);
 
+            // LAUNCH CANADA 2024 !!!!
+
             dataDict = {
                 flightMode: flightMode,
                 statIgniter1: (line[1] >> 5) & 1, // 1: ok, 0: error
@@ -192,15 +194,15 @@ export default class MyData extends EventEmitter {
                 gps_fix: (line[1] >> 1) & 1, // 1: ok, 0: error
                 statSD: line[1] & 1, // 1: ok, 0: error
 
-                altitude: line.subarray(2, 6).readFloatBE(),
-                temperature: line.subarray(6, 10).readFloatBE(),
-                latitude: line.subarray(14, 18).readFloatBE(),
-                longitude: line.subarray(18, 22).readFloatBE(),
-                accelerationX: line.subarray(34, 38).readFloatBE(),
-                accelerationY: line.subarray(38, 42).readFloatBE(),
-                accelerationZ: line.subarray(42, 46).readFloatBE(),
-                roll: line.subarray(46, 50).readFloatBE(),
-                pitch: line.subarray(50, 54).readFloatBE(),
+                altitude: line.subarray(2, 6).readFloatLE(),
+                temperature: line.subarray(6, 10).readFloatLE(),
+                latitude: line.subarray(10, 14).readFloatLE(),
+                longitude: line.subarray(14, 18).readFloatLE(),
+                accelerationX: line.subarray(30, 34).readFloatLE(),
+                accelerationY: line.subarray(34, 38).readFloatLE(),
+                accelerationZ: line.subarray(38, 42).readFloatLE(),
+                roll: line.subarray(42, 46).readFloatLE(),
+                pitch: line.subarray(46, 50).readFloatLE(),
             };
         }
 
@@ -318,7 +320,7 @@ export default class MyData extends EventEmitter {
         // Battery 3 voltage in mV
         stdData.batt3_mV = data.lipo3_mV !== undefined ? numberPrecision(data.lipo3_mV, 0) : null;
 
-        // console.log(stdData);
+        console.log(stdData);
 
         return stdData;
     }
