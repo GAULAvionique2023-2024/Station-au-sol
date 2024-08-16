@@ -198,10 +198,13 @@ export default class MyData extends EventEmitter {
                 temperature: line.subarray(6, 10).readFloatLE(),
                 latitude: line.subarray(10, 14).readFloatLE(),
                 longitude: line.subarray(14, 18).readFloatLE(),
+                // yaw: line.subarray(18, 22).readFloatLE(),
+                // pitch: line.subarray(22, 26).readFloatLE(),
+                // roll: line.subarray(26, 30).readFloatLE(),
                 accelerationX: line.subarray(30, 34).readFloatLE(),
                 accelerationY: line.subarray(34, 38).readFloatLE(),
                 accelerationZ: line.subarray(38, 42).readFloatLE(),
-                roll: line.subarray(42, 46).readFloatLE(),
+                yaw: line.subarray(42, 46).readFloatLE(), // Roll is in reality yaw
                 pitch: line.subarray(46, 50).readFloatLE(),
             };
         }
