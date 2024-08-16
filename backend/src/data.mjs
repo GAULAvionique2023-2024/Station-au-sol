@@ -26,6 +26,9 @@ export default class MyData extends EventEmitter {
         this.lineStart = lineStart;
         this.lineEnding = lineEnding;
         this.dataInterval = dataInterval;
+
+        this.spdLastTime = Date.now(); // For speed calculation
+        this.spdLastAltitude; // For speed calculation
     }
 
     // Extract a line of data
@@ -300,7 +303,12 @@ export default class MyData extends EventEmitter {
         stdData.altitude = data.altitude !== undefined ? numberPrecision(data.altitude, 2) : null;
         stdData.altitude_ft = data.altitude !== undefined ? numberPrecision(data.altitude * 3.28084, 2) : null;
         // Vertical speed in m/s
-        stdData.speed = data.speed !== undefined ? numberPrecision(data.speed, 2) : null;
+        stdData.speed = numberPrecision(
+            (data.altitude - this.spdLastAltitude) / ((Date.now() - this.spdLastTime) / 1000),
+            2
+        ); // Avg speed
+        this.spdLastAltitude = stdData.altitude;
+        this.spdLastTime = Date.now();
         // Highest acceleration in m/s
         stdData.acceleration = Math.max(data.accelerationX, data.accelerationY, data.accelerationZ);
         stdData.acceleration = stdData.acceleration !== NaN ? numberPrecision(stdData.acceleration, 2) : null;
