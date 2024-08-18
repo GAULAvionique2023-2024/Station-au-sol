@@ -325,7 +325,7 @@ export default class MyData extends EventEmitter {
         stdData.acceleration = Math.max(data.accelerationX, data.accelerationY, data.accelerationZ);
         stdData.acceleration = stdData.acceleration !== NaN ? numberPrecision(stdData.acceleration, 2) : null;
         // GPS Fix (0: NO FIX, 1: FIX)
-        stdData.gps_fix = data.gps_fix !== undefined ? data.fix : null;
+        stdData.gps_fix = data.gps_fix !== undefined ? data.gps_fix : null;
         // Latitude from GPS in degrees
         stdData.latitude = data.latitude !== undefined ? numberPrecision(data.latitude, 8) : null;
         // Longitude from GPS in degrees
