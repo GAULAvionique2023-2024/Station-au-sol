@@ -76,12 +76,15 @@ export default class MyData extends EventEmitter {
         // 0: PREFLIGHT, 1: INFLIGHT, 2: POSTFLIGHT, 3: DEBUG
         const flightMode = line[1] >> 6;
 
-        if (![0, 1, 2, 3].includes(flightMode)) {
+        // if (![0, 1, 2, 3].includes(flightMode)) {
+        if (flightMode !== 1) {
             this.emit("dataEvent", {
                 type: "error",
-                error: "flight mode is unknown (not 0, 1, 2 or 3)",
+                // error: "flight mode is unknown (not 0, 1, 2 or 3)",
+                error: "flight mode is unknown (only support flightmode 1)",
             });
-            logger(chalk.blue("Data"), chalk.red("flight mode is unknown (not 0, 1, 2 or 3)"));
+            logger(chalk.blue("Data"), chalk.red("flight mode is unknown (only support flightmode 1)"));
+            return;
         }
 
         let dataDict;
@@ -263,6 +266,15 @@ export default class MyData extends EventEmitter {
                 mVLipo3: line.subarray(22, 24).readUInt16BE(),
                 mVAN: line.subarray(24, 26).readUInt16BE(),
             };
+        }
+
+        if (dataDict === undefined) {
+            this.emit("dataEvent", {
+                type: "error",
+                error: "cannot parse data",
+            });
+            logger(chalk.blue("Data"), chalk.red("cannot parse data"));
+            return;
         }
 
         // console.log(dataDict);
